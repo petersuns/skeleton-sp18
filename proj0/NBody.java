@@ -1,4 +1,4 @@
-class NBody{
+public class NBody{
 
 
 
