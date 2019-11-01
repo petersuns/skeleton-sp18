@@ -1,4 +1,4 @@
-public class NBody{
+class NBody{
 
 
 
@@ -54,41 +54,57 @@ public class NBody{
 	public static void main(String[] args){
 		double T = Double.parseDouble(args[0]);
 		double dt = Double.parseDouble(args[1]);
-		String filename = args[3];
+		String filename = args[2];
 		double radius = readRadius(filename);
-		readPlanets(filename);
+		Planet[] planets = readPlanets(filename);
 		// set the scale of the coordinate system
-        StdDraw.setXscale(-radius, radius);
-        StdDraw.setYscale(-radius, radius);
+        StdDraw.setScale(-radius, radius);
+        //StdDraw.setYscale(-radius, radius);
+		StdDraw.clear();
+
+        double time = 0 ;
+
+
+        //StdDraw.enableDoubleBuffering();
         StdDraw.enableDoubleBuffering();
 
-        // main animation loop
-        while (true) { 
+        while (time<=T){
+        	double[] xForce = new double[planets.length];
+        	double[] yForce = new double[planets.length];
 
-            // bounce off wall according to law of elastic collision
-            // if (Math.abs(rx + vx) + radius > 1.0) {
-            //     vx = -vx;
-            //     StdAudio.play("pipebang.wav");
-            // }
-            // if (Math.abs(ry + vy) + radius > 1.0) {
-            //     vy = -vy;
-            //     StdAudio.play("pipebang.wav");
-            // }
 
-            // // update position
-            // rx = rx + vx; 
-            // ry = ry + vy; 
+	        // int i=0;
+	        for (int i = 0; i<planets.length; i++){
+	        	xForce[i] = planets[i].calcNetForceExertedByX(planets); 
+        		yForce[i] = planets[i].calcNetForceExertedByY(planets); 
+	        }
+	        for (int i = 0; i<planets.length; i++){
+        		planets[i].update(dt, xForce[i], yForce[i]);
+        		//planets[i].draw();
+	        }
+	       	StdDraw.picture(0, 0, "images/starfield.jpg");
 
-            // set the background to light gray
-            //StdDraw.clear(StdDraw.LIGHT_GRAY);
+	        for (int i = 0; i<planets.length; i++){
+        		//planets[i].update(dt, xForce[i], yForce[i]);
+        		planets[i].draw();
+	        }
+ 			StdDraw.show();
+			StdDraw.pause(10);
+			time+=dt;
+        }
 
-            // draw ball on the screen
-            StdDraw.picture(0.0, 0.0, "images/starfield.jpg");
+        StdOut.printf("%d\n", planets.length);
+		StdOut.printf("%.2e\n", radius);
+		for (int i = 0; i < planets.length; i++) {
+    		StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
+                  planets[i].xxPos, planets[i].yyPos, planets[i].xxVel,
+                  planets[i].yyVel, planets[i].mass, planets[i].imgFileName);   
+		}
 
-            // display and pause for 20ms
-            StdDraw.show();
-            //StdDraw.pause(20); 
-        } 
+		//System.out.println(planets[1].img);
+
+    	//planets[2].draw();
+        
 	}
 
 

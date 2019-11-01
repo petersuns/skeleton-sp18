@@ -6,7 +6,7 @@ public class Planet{
 	public double mass;
 	public String imgFileName;
 
-	public static final double gravConstant = 6.67e-11;
+	private static final double gravConstant = 6.67e-11;
 
 	public Planet (double xP, double yP, double xV,
 				   double yV, double m, String img){
@@ -81,6 +81,16 @@ public class Planet{
 
 	}
 
+	public void draw(){
+		StdDraw.enableDoubleBuffering();
+        //StdDraw.clear();
+        StdDraw.picture(this.xxPos, this.yyPos, "images/"+this.imgFileName);
+            // display and pause for 20ms
+        StdDraw.show();
+
+
+	}
+
 	public void update(double dt, double fx, double fy){
 		// acceleration ax=Fx/m
 		//double fx=this.calcNetForceExertedByY;
@@ -91,6 +101,7 @@ public class Planet{
 		this.xxPos = this.xxPos + dt*this.xxVel;
         this.yyPos = this.yyPos + dt*this.yyVel;
 	}
+
 
 
 
