@@ -22,14 +22,14 @@ public class LinkedListDeque{
     public LinkedListDeque(){
         sentinel = new Node(null, item, null);
         sentinel.pre = sentinel;
-        sentinel.next = sentinel.pre;
+        sentinel.next = sentinel;
         size = 0;
     }
     //the first item (if it exists) is at sentinel.next.
     public LinkedListDeque(int item){
         sentinel = new Node(null, item, null);
         sentinel.pre = sentinel;
-        sentinel.next = sentinel.pre;
+        sentinel.next = sentinel;
 
         sentinel.next = new Node(sentinel,item,sentinel.next);
         sentinel.pre = sentinel.next;
