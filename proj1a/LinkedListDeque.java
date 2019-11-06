@@ -16,7 +16,6 @@ public class LinkedListDeque<T>{
     private int size;
     //public int item;
     private Node sentinel;
-    //public T[] = ;
 
     // creates an empty list
     public LinkedListDeque(){
@@ -36,21 +35,15 @@ public class LinkedListDeque<T>{
 //        size = 1;
 //    }
 
-//    public void addFirst(T item){
-//        sentinel.next.pre =  new Node(sentinel, item, sentinel.next);;
-//        sentinel.next = sentinel.next.pre;
-//        size +=1;
-//    }
-
     public void addFirst(T item){
-        sentinel.next =  new Node(sentinel, item, sentinel.next);;
-        sentinel.next.next.pre = sentinel.next;
+        sentinel.next.pre =  new Node(sentinel, item, sentinel.next);;
+        sentinel.next = sentinel.next.pre;
         size +=1;
     }
 
     public void addLast(T item){
-        sentinel.pre =  new Node(sentinel.next, item, sentinel);;
-        sentinel.next.next = sentinel.pre;
+        sentinel.pre =  new Node(sentinel.pre, item, sentinel);;
+        sentinel.pre.pre.next = sentinel.pre;
         size +=1;
     }
 
@@ -62,10 +55,11 @@ public class LinkedListDeque<T>{
     }
 
     public void printDeque(){
-        for (int i=0; i<this.length; i++){
-            System.out.println(this.item);
-            System.out.println(" ");
-            this = this.next;
+        Node toPrint = sentinel.next;
+        for (int i=0; i<size; i++){
+            System.out.print(toPrint.item);
+            System.out.print(" ");
+            toPrint = toPrint.next;
         }
     }
 
@@ -74,8 +68,10 @@ public class LinkedListDeque<T>{
             return null;
         }
         T first_item = sentinel.next.item;
+
         sentinel.next = sentinel.next.next;
         sentinel.next.pre=sentinel;
+
         size -=1;
         return first_item;
     }
@@ -92,51 +88,63 @@ public class LinkedListDeque<T>{
     }
 
     public T get(int index) {
-        if (size == 0) {
+        if (size == 0 || index>size-1|| index<0) {
             return null;
         }
         Node ptr = sentinel.next;
-        for (int i = 1; i < index; i++) {
+        for (int i = 0; i < index; i++) {
 
             ptr = ptr.next;
-            i++;
+            //i++;
         }
         return ptr.item;
     }
 
     public T getRecursive(int index){
+        Node ptr = sentinel.next;
         if(size==0){
             return null;
         }
         if(index==0){
-            return prt.item;
+            return ptr.item;
         }
-        Node ptr = sentinel.next;
         return getRecursive(index-1);
     }
+    public static void main(String[] args) {
+        LinkedListDeque<Integer> Dllist = new LinkedListDeque<>();
+        Dllist.addFirst(666);
+        Dllist.addLast(6666);
+        Dllist.addLast(66666);
+        Dllist.printDeque();
+        System.out.println();// expected (666 6666 66666)
+        System.out.println("Test getIterative #1");
+        System.out.println(Dllist.get(0)); // expected 666
+        System.out.println(Dllist.get(1)); // expected 6666
+        System.out.println(Dllist.get(2)); // expected 66666
+        System.out.println(Dllist.get(5)); // expected null
+        System.out.println("Test getIterative #1");
+        System.out.println(Dllist.getRecursive(0)); // expected 666
+        System.out.println(Dllist.getRecursive(1)); // expected 6666
+        System.out.println("Test done!");
+////
+//        Dllist.removeFirst();
+//        Dllist.printDeque();                        // expected (6666 66666)
+//        System.out.println("Test getIterative #2 removeFirst");
+//        System.out.println(Dllist.get(0)); // expected 6666
+//        System.out.println(Dllist.get(1)); // expected 66666
+//        System.out.println("Test getRecursive #2 removeFirst");
+//        System.out.println(Dllist.getRecursive(0)); // expected 6666
+//        System.out.println(Dllist.getRecursive(1)); // expected 66666
+//
+//        Dllist.removeLast();
+//        Dllist.printDeque();                        // expected 6666
+//        System.out.println("Test getIterative #3 removeLast");
+//        System.out.println(Dllist.get(0)); // expected 6666
+//        System.out.println(Dllist.get(1)); // expected null
+//        System.out.println("Test getRecursive #3 removeFirst");
+//        System.out.println(Dllist.getRecursive(0)); // expected 6666
+//        System.out.println(Dllist.getRecursive(1)); // expected null
+    }
 
-//
-//    private void resize(int capacity){
-//        T[] new_items =(T[]) new Object[capacity];
-//        System.arraycopy(items, 0, new_items, 0, size);
-//        items = new_items;
-//    }
-//
-//
-//
-//
-//
-//    public void remove(){
-//
-//    }
-//
-//    public int get(int i){
-//        return items[i];
-//    }
-//
-//
-//
-//
-//
 
 }
