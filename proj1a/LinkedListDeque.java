@@ -64,18 +64,51 @@ public class LinkedListDeque<T>{
     }
 
     public T removeFirst(){
-        while(size==0){
+        if(size==0){
             return null;
         }
+        T first_item = sentinel.next.item;
         sentinel.next = sentinel.next.next;
-        sentinel.next.next.pre=sentinel;
+        sentinel.next.pre=sentinel;
         size -=1;
+        return first_item;
     }
-//
-//
-//    public int getRecursive(int index){
-//
-//    }
+
+    public T removeLast(){
+        if(size==0){
+            return null;
+        }
+        T last_item = sentinel.pre.item;
+        sentinel.pre = sentinel.pre.pre;
+        sentinel.pre.next=sentinel;
+        size -=1;
+        return last_item;
+    }
+
+    public T get(int index) {
+        if (size == 0) {
+            return null;
+        }
+        Node ptr = sentinel.next;
+        for (int i = 1; i < index; i++) {
+
+            ptr = ptr.next;
+            i++;
+        }
+        return ptr.item;
+    }
+
+    public T getRecursive(int index){
+        if(size==0){
+            return null;
+        }
+        if(index==0){
+            return prt.item;
+        }
+        Node ptr = sentinel.next;
+        return getRecursive(index-1);
+    }
+
 //
 //    private void resize(int capacity){
 //        T[] new_items =(T[]) new Object[capacity];
