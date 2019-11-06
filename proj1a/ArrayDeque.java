@@ -2,6 +2,9 @@ public class ArrayDeque<T>{
 
     public T[] items;
     private int size;
+    private int nextFirst;
+    private int nextLast;
+
 //    public int l = items.length;
 //    private Node sentinel;
 
@@ -9,22 +12,27 @@ public class ArrayDeque<T>{
     public ArrayDeque(){
         items =(T[]) new Object[8];
         size=0;
-        int nextFirst=0;
-        int nextLast = size;
+        nextFirst=0;
+        nextLast = 1;
 
     }
 
     /** Resizes the underlying array to the target capacity. */
-    private void resize(int capacity) {
-        T[] a = (T[]) new Object[capacity];
-        System.arraycopy(items, 0, a, 0, size);
-        items = a;
+    private void resize() {
+        if (size==items.length){
+            T[] a = (T[]) new Object[size * 2];
+            System.arraycopy(items, 0, a, 0, size);
+            items = a;
+        }else if(size>=16 && size<items.length/4) {
+            T[] a = (T[]) new Object[size / 2];
+            System.arraycopy(items, 0, a, 0, size/2);
+            items = a;
+        }
+
     }
 
     public void addFirst(T item){
-        if (size==items.length){
-            resize(size*2);
-        }
+        resize();
         T[] new_list = (T[]) new Object[items.length+1];
         new_list[0] = item;
         System.arraycopy(items, 0, new_list, 1, size);
@@ -33,9 +41,7 @@ public class ArrayDeque<T>{
     }
 
     public void addLast(T item){
-        if (size==items.length){
-            resize(size*2);
-        }
+        resize();
         items[size] =item;
         size +=1;
     }
@@ -63,9 +69,8 @@ public class ArrayDeque<T>{
         if(size == 0){
             return null;
         }
-        if (size>8 && size<items.length*0.25){
-            resize(size/2+1);
-        }
+        resize();
+
         T first_item = items[0];
         T[] new_list = (T[]) new Object[items.length];
         System.arraycopy(items, 1, new_list, 0, size-1);
@@ -78,9 +83,8 @@ public class ArrayDeque<T>{
         if(size == 0){
             return null;
         }
-        if (size>8 && size<items.length*0.25){
-            resize(size/2+1);
-        }
+        resize();
+
         T last_item = items[size - 1];
         items[size-1] = null;
         size -= 1;
