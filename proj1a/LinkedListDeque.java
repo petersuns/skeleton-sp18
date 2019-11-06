@@ -1,11 +1,11 @@
-public class LinkedListDeque{
+public class LinkedListDeque<T>{
 
     public  class Node{
-        public int item;
+        public T item;
         public Node pre;
         public Node next;
 
-        public Node(Node p, int i, Node n){
+        public Node(Node p, T i, Node n){
             pre = p;
             item=i;
             next = n;
@@ -14,35 +14,35 @@ public class LinkedListDeque{
     }
 
     private int size;
-    public int item;
+    //public int item;
     private Node sentinel;
     //public T[] = ;
 
     // creates an empty list
     public LinkedListDeque(){
-        sentinel = new Node(null, item, null);
+        sentinel = new Node(null, null, null);
         sentinel.pre = sentinel;
         sentinel.next = sentinel;
         size = 0;
     }
     //the first item (if it exists) is at sentinel.next.
-    public LinkedListDeque(int item){
-        sentinel = new Node(null, item, null);
-        sentinel.pre = sentinel;
-        sentinel.next = sentinel;
+//    public LinkedListDeque(int item){
+//        sentinel = new Node(null, item, null);
+//        sentinel.pre = sentinel;
+//        sentinel.next = sentinel;
+//
+//        sentinel.next = new Node(sentinel,item,sentinel.next);
+//        sentinel.pre = sentinel.next;
+//        size = 1;
+//    }
 
-        sentinel.next = new Node(sentinel,item,sentinel.next);
-        sentinel.pre = sentinel.next;
-        size = 1;
-    }
-
-    public void addFirst(int item){
+    public void addFirst(T item){
         sentinel.next.pre =  new Node(sentinel, item, sentinel.next);;
         sentinel.next = sentinel.next.pre;
         size +=1;
     }
 
-    public void addLast(int item){
+    public void addLast(T item){
         sentinel.pre =  new Node(sentinel.next, item, sentinel);;
         sentinel.next.next = sentinel.pre;
         size +=1;
@@ -63,7 +63,7 @@ public class LinkedListDeque{
         }
     }
 
-    public int removeFirst(){
+    public T removeFirst(){
         while(size==0){
             return null;
         }
