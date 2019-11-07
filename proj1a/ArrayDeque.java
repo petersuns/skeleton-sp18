@@ -10,29 +10,29 @@ public class ArrayDeque<T>{
 
     // creates an empty list
     public ArrayDeque(){
-        items =(T[]) new Object[8];
-        size=0;
-        nextFirst=0;
+        items = (T[]) new Object[8];
+        size = 0;
+        nextFirst = 0;
         nextLast = 1;
 
     }
 
-    private int plusOne(int nextFirst ){
-        if(nextFirst !=0){
-            nextFirst -=1;
+    private int plusOne(int index ){
+        if(index !=0){
+            index -=1;
         }else {
-            nextFirst = items.length - 1;
+            index = items.length - 1;
         }
-        return nextFirst;
+        return index;
     }
 
-    private int minusOne(int nextLast ){
-        if(nextFirst != items.length-1){
-            nextFirst +=1;
+    private int minusOne(int index ){
+        if(index != items.length-1){
+            index +=1;
         }else {
-            nextFirst = 0;
+            index = 0;
         }
-        return nextFirst;
+        return index;
     }
 
     /** Resizes the underlying array to the target capacity. */
@@ -83,9 +83,9 @@ public class ArrayDeque<T>{
 
     public void printDeque(){
         //Node toPrint = sentinel.next;
-        for (int i = 0; i < size; i++){
-            System.out.print(items[i]);
-            System.out.print(" ");
+        for (int i = minusOne(nextFirst) ; i != nextLast; i = minusOne(i)){
+            System.out.print(items[i] + " ");
+//            System.out.print(" ");
             //toPrint = toPrint.next;
         }
     }
@@ -130,15 +130,19 @@ public class ArrayDeque<T>{
         System.out.println("size:" + Dllist.size); // expect 1
         System.out.println("length:" + Dllist.len()); // expect 9
         Dllist.addLast(1);
+        Dllist.printDeque();
         System.out.println("size:" + Dllist.size); // expect 1
         System.out.println("length:" + Dllist.len()); // expect 9
         Dllist.addLast(2);
+        Dllist.printDeque();
         System.out.println("size:" + Dllist.size); // expect 1
         System.out.println("length:" + Dllist.len()); // expect 9
         Dllist.addLast(3);
+        Dllist.printDeque();
         System.out.println("size:" + Dllist.size); // expect 1
         System.out.println("length:" + Dllist.len()); // expect 9
         Dllist.addLast(4);
+        Dllist.printDeque();
         System.out.println("size:" + Dllist.size); // expect 1
         System.out.println("length:" + Dllist.len()); // expect 9
         Dllist.addLast(5);
