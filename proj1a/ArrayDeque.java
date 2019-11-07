@@ -1,6 +1,6 @@
 public class ArrayDeque<T>{
 
-    public T[] items;
+    private T[] items;
     private int size;
     private int nextFirst;
     private int nextLast;
@@ -17,7 +17,7 @@ public class ArrayDeque<T>{
 
     }
 
-    public int plusOne(int nextFirst ){
+    private int plusOne(int nextFirst ){
         if(nextFirst !=0){
             nextFirst -=1;
         }else {
@@ -26,7 +26,7 @@ public class ArrayDeque<T>{
         return nextFirst;
     }
 
-    public int minusOne(int nextLast ){
+    private int minusOne(int nextLast ){
         if(nextFirst != items.length-1){
             nextFirst +=1;
         }else {
@@ -57,7 +57,7 @@ public class ArrayDeque<T>{
     public void addFirst(T item){
         resize();
         T[] new_list = (T[]) new Object[items.length+1];
-        new_list[0] = item;
+        new_list[nextFirst] = item;
         System.arraycopy(items, 0, new_list, 1, size);
         size +=1;
         items = new_list;
@@ -66,10 +66,9 @@ public class ArrayDeque<T>{
 
     public void addLast(T item){
         resize();
-        items[size] =item;
+        items[nextLast] =item;
         size +=1;
         nextLast = minusOne(nextLast);
-
     }
 
     public boolean isEmpty(){
@@ -78,7 +77,7 @@ public class ArrayDeque<T>{
     public int size(){
         return size;
     }
-    public int len(){
+    private int len(){
         return items.length;
     }
 
@@ -95,15 +94,14 @@ public class ArrayDeque<T>{
         if(size == 0){
             return null;
         }
-        resize();
-
-        T first_item = items[0];
-        T[] new_list = (T[]) new Object[items.length];
-        System.arraycopy(items, 1, new_list, 0, size-1);
-        items = new_list;
+        T first_item = items[ minusOne(nextFirst) ];
+        items[ minusOne(nextFirst) ] = null;
+//        T[] new_list = (T[]) new Object[items.length];
+//        System.arraycopy(items, 1, new_list, 0, size-1);
+//        items = new_list;
         size -= 1;
         nextFirst = minusOne(nextFirst);
-
+        resize();
         return first_item;
     }
 
@@ -111,13 +109,11 @@ public class ArrayDeque<T>{
         if(size == 0){
             return null;
         }
-        resize();
-
-        T last_item = items[size - 1];
+        T last_item = items[plusOne(nextFirst)];
         items[size-1] = null;
         size -= 1;
         nextLast = plusOne(nextLast);
-
+        resize();
         return last_item;
     }
 
