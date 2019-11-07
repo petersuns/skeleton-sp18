@@ -40,7 +40,7 @@ public class ArrayDeque<T>{
         if (size==items.length){
             T[] a = (T[]) new Object[size * 2];
 
-            System.arraycopy(items, 0, a, 0, size*2);
+            System.arraycopy(items, 0, a, 0, size);
             items = a;
             nextFirst = size*2 -1;
             nextLast = size * 2;
@@ -131,32 +131,38 @@ public class ArrayDeque<T>{
 
     public static void main(String[] args) {
         ArrayDeque<Integer> Dllist = new ArrayDeque<>();
-//        System.out.println("size:" + Dllist.size); // expect 1
-//        System.out.println("length:" + Dllist.len()); // expect 9
-//        Dllist.addLast(1);
-//        System.out.println("size:" + Dllist.size); // expect 1
-//        System.out.println("length:" + Dllist.len()); // expect 9
-//        Dllist.addLast(2);
-//        System.out.println("size:" + Dllist.size); // expect 1
-//        System.out.println("length:" + Dllist.len()); // expect 9
-//        Dllist.addLast(3);
-//        System.out.println("size:" + Dllist.size); // expect 1
-//        System.out.println("length:" + Dllist.len()); // expect 9
-//        Dllist.addLast(4);
-//        System.out.println("size:" + Dllist.size); // expect 1
-//        System.out.println("length:" + Dllist.len()); // expect 9
+        System.out.println("size:" + Dllist.size); // expect 1
+        System.out.println("length:" + Dllist.len()); // expect 9
+        Dllist.addLast(1);
+        System.out.println("size:" + Dllist.size); // expect 1
+        System.out.println("length:" + Dllist.len()); // expect 9
+        Dllist.addLast(2);
+        System.out.println("size:" + Dllist.size); // expect 1
+        System.out.println("length:" + Dllist.len()); // expect 9
+        Dllist.addLast(3);
+        System.out.println("size:" + Dllist.size); // expect 1
+        System.out.println("length:" + Dllist.len()); // expect 9
+        Dllist.addLast(4);
+        System.out.println("size:" + Dllist.size); // expect 1
+        System.out.println("length:" + Dllist.len()); // expect 9
+        Dllist.addLast(5);
+        Dllist.addLast(5);
 //        Dllist.addLast(5);
-//        System.out.println("size:" + Dllist.size); // expect 1
-//        System.out.println("length:" + Dllist.len()); // expect 9
-//        Dllist.addLast(6);
-//
-//        Dllist.printDeque();
-//        System.out.println(); // expect 1
-//        System.out.println("Test get #1");
-//        System.out.println(Dllist.get(0)); // expected 666
-//        System.out.println(Dllist.get(1)); // expected 6666
-//        System.out.println(Dllist.get(2)); // expected 66666
-//        System.out.println(Dllist.get(3)); // expected null
+//        Dllist.addLast(5);
+//        Dllist.addLast(5);
+//        Dllist.addLast(5);
+
+        System.out.println("size:" + Dllist.size); // expect 1
+        System.out.println("length:" + Dllist.len()); // expect 9
+        Dllist.addLast(6);
+
+        Dllist.printDeque();
+        System.out.println(); // expect 1
+        System.out.println("Test get #1");
+        System.out.println(Dllist.get(0)); // expected 666
+        System.out.println(Dllist.get(1)); // expected 6666
+        System.out.println(Dllist.get(2)); // expected 66666
+        System.out.println(Dllist.get(3)); // expected null
 //        System.out.println(); // expect 1
 //        Dllist.removeFirst();
 //        Dllist.removeLast();
