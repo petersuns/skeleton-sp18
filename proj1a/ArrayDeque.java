@@ -12,8 +12,8 @@ public class ArrayDeque<T>{
     public ArrayDeque(){
         items = (T[]) new Object[8];
         size = 0;
-        nextFirst = 4;
-        nextLast = 5;
+        nextFirst = 0;
+        nextLast = 1;
 
     }
 
@@ -132,9 +132,24 @@ public class ArrayDeque<T>{
     }
 
     public void printDeque(){
-        for (int i = minusOne(nextFirst) ; i != nextLast; i = minusOne(i)){
-            System.out.print(items[i] + " ");
-        }
+//            if (size == items.length){
+//                int j=0;
+//                for (int i = minusOne(nextFirst) ; j<size; i = minusOne(i)){
+//                    System.out.print(items[i] + " ");
+//                    j++;
+//            }
+//            }else{
+
+//                for (int i = minusOne(nextFirst) ; i != nextLast; i = minusOne(i)){
+//                System.out.print(items[i] + " ");
+                int j=0;
+                for (int i = minusOne(nextFirst) ; j<size; i = minusOne(i)){
+                    System.out.print(items[i] + " ");
+                    j++;
+
+                }
+
+//        }
         System.out.println();
     }
 
@@ -159,8 +174,8 @@ public class ArrayDeque<T>{
         if(size == 0){
             return null;
         }
-        T last_item = items[plusOne(nextFirst)];
-        items[size-1] = null;
+        T last_item = items[plusOne(nextLast)];
+        items[plusOne(nextLast)] = null;
         size -= 1;
         nextLast = plusOne(nextLast);
         resize();
@@ -213,10 +228,10 @@ public class ArrayDeque<T>{
         System.out.println(Dllist.get(1)); // expected 6666
         System.out.println(Dllist.get(2)); // expected 66666
         System.out.println(Dllist.get(3)); // expected null
-//        System.out.println(); // expect 1
-//        Dllist.removeFirst();
-//        Dllist.removeLast();
-//        Dllist.printDeque();
+        System.out.println("remove first:" + Dllist.removeFirst()); // expect 1
+        Dllist.printDeque();
+        System.out.println("remove last:" + Dllist.removeLast()); // expect 1
+        Dllist.printDeque();
 //        System.out.println(); // expect 1
 //        System.out.println("Test get #1");
 //        System.out.println(Dllist.get(0)); // expected 666
