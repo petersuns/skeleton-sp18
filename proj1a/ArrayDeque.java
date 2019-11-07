@@ -17,16 +17,39 @@ public class ArrayDeque<T>{
 
     }
 
+    public int plusOne(int nextFirst ){
+        if(nextFirst !=0){
+            nextFirst -=1;
+        }else {
+            nextFirst = items.length - 1;
+        }
+        return nextFirst;
+    }
+
+    public int minusOne(int nextLast ){
+        if(nextFirst != items.length-1){
+            nextFirst +=1;
+        }else {
+            nextFirst = 0;
+        }
+        return nextFirst;
+    }
+
     /** Resizes the underlying array to the target capacity. */
     private void resize() {
         if (size==items.length){
             T[] a = (T[]) new Object[size * 2];
-            System.arraycopy(items, 0, a, 0, size);
+
+            System.arraycopy(items, 0, a, 0, size*2);
             items = a;
+            nextFirst = size*2 -1;
+            nextLast = size * 2;
         }else if(size>=16 && size<items.length/4) {
             T[] a = (T[]) new Object[size / 2];
             System.arraycopy(items, 0, a, 0, size/2);
             items = a;
+            nextFirst = size/2 -1;
+            nextLast = size / 2;
         }
 
     }
@@ -38,12 +61,15 @@ public class ArrayDeque<T>{
         System.arraycopy(items, 0, new_list, 1, size);
         size +=1;
         items = new_list;
+        nextFirst = plusOne(nextFirst);
     }
 
     public void addLast(T item){
         resize();
         items[size] =item;
         size +=1;
+        nextLast = minusOne(nextLast);
+
     }
 
     public boolean isEmpty(){
@@ -76,6 +102,8 @@ public class ArrayDeque<T>{
         System.arraycopy(items, 1, new_list, 0, size-1);
         items = new_list;
         size -= 1;
+        nextFirst = minusOne(nextFirst);
+
         return first_item;
     }
 
@@ -88,6 +116,8 @@ public class ArrayDeque<T>{
         T last_item = items[size - 1];
         items[size-1] = null;
         size -= 1;
+        nextLast = plusOne(nextLast);
+
         return last_item;
     }
 
@@ -152,6 +182,9 @@ public class ArrayDeque<T>{
            System.out.println(Dllist.get(0)); // expected 666
         System.out.println("size:" + Dllist.size); // expect 1
         System.out.println("length:" + Dllist.len()); // expect 9
+        System.out.println("2 % 9 = " + 2%9); // expect 9
+        System.out.println("0 % 9 = " + 0%9); // expect 9
+
         Dllist.removeFirst();
 
 
