@@ -43,13 +43,13 @@ public class ArrayDeque<T>{
             System.arraycopy(items, 0, a, 0, size);
             items = a;
             nextFirst = size*2 -1;
-            nextLast = size * 2;
+            nextLast = size ;
         }else if(size>=16 && size<items.length/4) {
             T[] a = (T[]) new Object[size / 2];
             System.arraycopy(items, 0, a, 0, size/2);
             items = a;
             nextFirst = size/2 -1;
-            nextLast = size / 2;
+            nextLast = size ;
         }
 
     }
@@ -147,10 +147,10 @@ public class ArrayDeque<T>{
         System.out.println("length:" + Dllist.len()); // expect 9
         Dllist.addLast(5);
         Dllist.addLast(5);
-//        Dllist.addLast(5);
-//        Dllist.addLast(5);
-//        Dllist.addLast(5);
-//        Dllist.addLast(5);
+        Dllist.addLast(5);
+        Dllist.addLast(5);
+        Dllist.addLast(5);
+        Dllist.addLast(5);
 
         System.out.println("size:" + Dllist.size); // expect 1
         System.out.println("length:" + Dllist.len()); // expect 9
