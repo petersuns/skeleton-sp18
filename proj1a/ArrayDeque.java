@@ -12,55 +12,105 @@ public class ArrayDeque<T>{
     public ArrayDeque(){
         items = (T[]) new Object[8];
         size = 0;
-        nextFirst = 0;
-        nextLast = 1;
+        nextFirst = 4;
+        nextLast = 5;
 
     }
 
-    private int plusOne(int index ){
-        if(index !=0){
-            index -=1;
-        }else {
-            index = items.length - 1;
-        }
-        return index;
+//    private int plusOne(int index ){
+//        if(index !=0){
+//            index -=1;
+//        }else {
+//            index = items.length - 1;
+//        }
+//        return index;
+//    }
+
+//    private int minusOne(int index ){
+//        if(index != items.length-1){
+//            index +=1;
+//        }else {
+//            index = 0;
+//        }
+//        return index;
+//    }
+
+    private int minusOne(int index) {
+        return (index + 1) % items.length;
     }
 
-    private int minusOne(int index ){
-        if(index != items.length-1){
-            index +=1;
-        }else {
-            index = 0;
-        }
-        return index;
+    private int plusOne(int index) {
+        // unlike Python, in Java, the % symbol represents "remainder" rather than "modulus",
+        // therefore, it may give negative value, so + items.length is necessary,
+        // or to use Math.floorMod(x, y)
+        return (index - 1 + items.length) % items.length;
     }
 
     /** Resizes the underlying array to the target capacity. */
-    private void resize() {
-        if (size==items.length){
-            T[] a = (T[]) new Object[size * 2];
+//    private void resize() {
+//        if (size==items.length){
+//            T[] a = (T[]) new Object[size * 2];
+//
+//            System.arraycopy(items, 0, a, 0, size);
+//            items = a;
+//            nextFirst = size*2 -1;
+//            nextLast = size ;
+//        }else if(size>=16 && size<items.length/4) {
+//            T[] a = (T[]) new Object[size / 2];
+//            System.arraycopy(items, 0, a, 0, size/2);
+//            items = a;
+//            nextFirst = size/2 -1;
+//            nextLast = size ;
+//        }
+//
+//    }
 
-            System.arraycopy(items, 0, a, 0, size);
-            items = a;
-            nextFirst = size*2 -1;
-            nextLast = size ;
+        private void resize() {
+        if (size==items.length){
+            int capacity = size*2;
+            T[] newDeque = (T[]) new Object[capacity];
+            int oldIndex = minusOne(nextFirst); // the index of the first item in original deque
+            for (int newIndex = 0; newIndex < size; newIndex++) {
+                newDeque[newIndex] = items[oldIndex];
+                oldIndex = minusOne(oldIndex);
+            }
+            items = newDeque;
+            nextFirst = capacity - 1; // since the new deque is starting from true 0 index.
+            nextLast = size;
         }else if(size>=16 && size<items.length/4) {
-            T[] a = (T[]) new Object[size / 2];
-            System.arraycopy(items, 0, a, 0, size/2);
-            items = a;
-            nextFirst = size/2 -1;
-            nextLast = size ;
+            int capacity = size/2;
+
+            T[] newDeque = (T[]) new Object[capacity];
+            int oldIndex = minusOne(nextFirst); // the index of the first item in original deque
+            for (int newIndex = 0; newIndex < size; newIndex++) {
+                newDeque[newIndex] = items[oldIndex];
+                oldIndex = minusOne(oldIndex);
+            }
+            items = newDeque;
+            nextFirst = capacity - 1; // since the new deque is starting from true 0 index.
+            nextLast = size;
         }
 
     }
 
+
+//    private void resize(int capacity) {
+//        T[] newDeque = (T[]) new Object[capacity];
+//        int oldIndex = minusOne(nextFirst); // the index of the first item in original deque
+//        for (int newIndex = 0; newIndex < size; newIndex++) {
+//            newDeque[newIndex] = items[oldIndex];
+//            oldIndex = minusOne(oldIndex);
+//        }
+//        items = newDeque;
+//        nextFirst = capacity - 1; // since the new deque is starting from true 0 index.
+//        nextLast = size;
+//
+//    }
+
     public void addFirst(T item){
         resize();
-        T[] new_list = (T[]) new Object[items.length+1];
-        new_list[nextFirst] = item;
-        System.arraycopy(items, 0, new_list, 1, size);
+        items[nextFirst] = item;
         size +=1;
-        items = new_list;
         nextFirst = plusOne(nextFirst);
     }
 
@@ -82,13 +132,13 @@ public class ArrayDeque<T>{
     }
 
     public void printDeque(){
-        //Node toPrint = sentinel.next;
         for (int i = minusOne(nextFirst) ; i != nextLast; i = minusOne(i)){
             System.out.print(items[i] + " ");
-//            System.out.print(" ");
-            //toPrint = toPrint.next;
         }
+        System.out.println();
     }
+
+
 
     public T removeFirst(){
         if(size == 0){
@@ -121,43 +171,43 @@ public class ArrayDeque<T>{
         if (size == 0 || index > size - 1 || index < 0) {
             return null;
         }
-        return items[index];
+        int start = minusOne(nextFirst);
+        return items[(start+index) % items.length];
+//        return items[index];
+
     }
 
 
     public static void main(String[] args) {
         ArrayDeque<Integer> Dllist = new ArrayDeque<>();
-        System.out.println("size:" + Dllist.size); // expect 1
-        System.out.println("length:" + Dllist.len()); // expect 9
+        System.out.print("size:" + Dllist.size + ", length:"+Dllist.len()+", print:");Dllist.printDeque();
         Dllist.addLast(1);
-        Dllist.printDeque();
-        System.out.println("size:" + Dllist.size); // expect 1
-        System.out.println("length:" + Dllist.len()); // expect 9
+        System.out.print("size:" + Dllist.size + ", length:"+Dllist.len()+", print:");Dllist.printDeque();
         Dllist.addLast(2);
-        Dllist.printDeque();
-        System.out.println("size:" + Dllist.size); // expect 1
-        System.out.println("length:" + Dllist.len()); // expect 9
+        System.out.print("size:" + Dllist.size + ", length:"+Dllist.len()+", print:");Dllist.printDeque();
         Dllist.addLast(3);
-        Dllist.printDeque();
-        System.out.println("size:" + Dllist.size); // expect 1
-        System.out.println("length:" + Dllist.len()); // expect 9
+        System.out.print("size:" + Dllist.size + ", length:"+Dllist.len()+", print:");Dllist.printDeque();
         Dllist.addLast(4);
-        Dllist.printDeque();
-        System.out.println("size:" + Dllist.size); // expect 1
-        System.out.println("length:" + Dllist.len()); // expect 9
+        System.out.print("size:" + Dllist.size + ", length:"+Dllist.len()+", print:");Dllist.printDeque();
         Dllist.addLast(5);
-        Dllist.addLast(5);
-        Dllist.addLast(5);
-        Dllist.addLast(5);
-        Dllist.addLast(5);
-        Dllist.addLast(5);
-
-        System.out.println("size:" + Dllist.size); // expect 1
-        System.out.println("length:" + Dllist.len()); // expect 9
         Dllist.addLast(6);
+        Dllist.addLast(7);
+        System.out.print("size:" + Dllist.size + ", length:"+Dllist.len()+", print:");Dllist.printDeque();
 
+        Dllist.addLast(8);
+        System.out.print("size:" + Dllist.size + ", length:"+Dllist.len()+", print:");
         Dllist.printDeque();
-        System.out.println(); // expect 1
+
+        Dllist.addLast(9);
+        System.out.print("size:" + Dllist.size + ", length:"+Dllist.len()+", print:");Dllist.printDeque();
+
+        Dllist.addLast(10);
+
+        System.out.print("size:" + Dllist.size + ", length:"+Dllist.len()+", print:");Dllist.printDeque();
+
+        Dllist.addLast(11);
+
+//        System.out.print("size:" + Dllist.size + ", length:"+Dllist.len()+", print:");Dllist.printDeque();
         System.out.println("Test get #1");
         System.out.println(Dllist.get(0)); // expected 666
         System.out.println(Dllist.get(1)); // expected 6666
