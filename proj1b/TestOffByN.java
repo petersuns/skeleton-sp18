@@ -8,7 +8,7 @@ public class TestOffByN {
 
     // Your tests go here.
     @Test
-    public void TestOffByOne(){
+    public void TestOffByN(){
 //        OffByN obo = new OffByOne(5);
 ////        System.out.println(obo.equalChars('a', 'b'));
 ////        System.out.println(obo.equalChars('b', 'a'));
