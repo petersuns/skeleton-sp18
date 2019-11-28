@@ -19,7 +19,7 @@ public class Palindrome {
         return word.equals(reverse);
     }
 
-    public boolean isPalindrome(Deque<Character> d, CharacterComparator cc){
+    private boolean isPalindrome(Deque<Character> d, CharacterComparator cc){
 //        Deque<Character> d = wordToDeque(word);
         while (d.size()>1){
             return cc.equalChars(d.removeFirst(),d.removeLast()) && isPalindrome(d,cc);
