@@ -28,7 +28,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     private static int leftIndex(int i) {
         /* TODO: Your code here! */
-        return 2*i;
+        // left child of a node at position i is at position 2i.
+        return 2 * i;
     }
 
     /**
@@ -36,7 +37,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     private static int rightIndex(int i) {
         /* TODO: Your code here! */
-        return 2*i+1;
+        // right child of a node at position i is at position 2i+1.
+        return 2 * i + 1;
     }
 
     /**
@@ -44,7 +46,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     private static int parentIndex(int i) {
         /* TODO: Your code here! */
-        return i/2;
+        // parent of a node at position i is at position i/2.
+        return i / 2;
     }
 
     /**
@@ -82,8 +85,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
 
 
     /**
-     * Returns the index of the node with smaller priority. Precondition: not
-     * both nodes are null.
+     * Return the index of the node with smaller priority.
+     * Precondition: not both nodes are null.
      */
     private int min(int index1, int index2) {
         Node node1 = getNode(index1);
@@ -108,17 +111,36 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         validateSinkSwimArg(index);
 
         /** TODO: Your code here. */
+        // get parentID and the smallerID
         int parentID = parentIndex(index);
-        if (parentID==0){
-            return;
-        }
-        int smaller = min(index, parentID);
-        if(smaller==parentID){
-            return;
-        }else{
-            swap(index,parentID);
+
+        if (parentID == 0) return;
+
+        // get current node cousin's index
+        int cousinID;
+        if (index % 2 == 0) {
+            cousinID = index + 1;
+        } else cousinID = index - 1;
+
+        // compare parent node with its children
+        int currentSmallerID = min(index, parentID);
+        int anotherSmallerID = min(cousinID, parentID);
+
+        // if parent is the smallest, then nothing happens
+
+        // if current node is the smallest, then swap it and its parent
+        if (currentSmallerID != parentID && anotherSmallerID == parentID) {
+            swap(index, parentID);
             swim(parentID);
         }
+
+        // if current node's cousin is the smallest, then swap it and its parent
+        if (anotherSmallerID != parentID && currentSmallerID == parentID) {
+            swap(cousinID, parentID);
+            swim(parentID);
+        }
+
+
     }
 
     /**
@@ -129,17 +151,40 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         validateSinkSwimArg(index);
 
         /** TODO: Your code here. */
+
         int leftID = leftIndex(index);
         int rightID = rightIndex(index);
 
-        int smaller_left = min(index,leftID);
-        int smaller_right = min(index, rightID);
-        int smaller = min(leftID, rightID);
+        int leftSmallerID = min(index, leftID);
+        int rightSmallerID = min(index, rightID);
 
-        if(smaller_left != index || smaller_right != index){
-            swap(index,smaller);
-            sink(smaller);
+        // index is the smallest, do not need to sink.
+        // if (leftSmallerID == index && rightSmallerID == index) {
+        //     return;
+        // }
+
+        // compare to left child, index is smaller; compare to right child, index is larger.
+        // need to swap index and the right child
+        if (rightSmallerID != index && leftSmallerID == index) {
+            swap(index, rightID);
+            sink(rightID);
         }
+
+        // compare to left child, index is larger; compare to right child, index is smaller.
+        // need to swap index and the left child
+        if (leftSmallerID != index && rightSmallerID == index) {
+            swap(index, leftID);
+            sink(leftID);
+        }
+
+        // if index is greater than both of its children
+        // compare their children and swap
+        if (leftSmallerID != index && rightSmallerID != index) {
+            int smallerChildID = min(leftID, rightID);
+            swap(index, smallerChildID);
+            sink(smallerChildID);
+        }
+
     }
 
     /**
@@ -154,18 +199,20 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         }
 
         /* TODO: Your code here! */
-        contents[size+1] = new Node(item, priority);
-        size++;
-        swim(size);
 
+        // check whether `T item` is already in the PQ
+        // not true -> (if so, then change it priority, then swim or sink)
+        // if not, then add it and swim
 
-//        int targetID = size + 1;
-//
-//        size += 1;
-//        Node toBeInserted = new Node(item, priority);
-//        contents[targetID] = toBeInserted;
-//
-//        swim(targetID);
+        // changePriority(item, priority);
+
+        int targetID = size + 1;
+
+        size += 1;
+        Node toBeInserted = new Node(item, priority);
+        contents[targetID] = toBeInserted;
+
+        swim(targetID);
 
     }
 
@@ -191,13 +238,18 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public T removeMin() {
         /* TODO: Your code here! */
-        T returnValue = getNode(1).item();
-        swap(1,size);
-        contents[size]=null;
-        size-=1;
-        sink(1);
-        return returnValue;
 
+        int rightmostID = size;
+        Node returnNode = getNode(1);
+        T returnValue = returnNode.item();
+
+        swap(1, rightmostID);
+        contents[size + 1] = null;
+        size -= 1;
+
+        sink(1);
+
+        return returnValue;
     }
 
     /**
@@ -220,13 +272,18 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public void changePriority(T item, double priority) {
         /* TODO: Your code here! */
-        for (int i=0; i<contents.length; i++){
-            if(contents[i]==null){break;}
-            if(item.equals(contents[i].item())){
+
+        for (int i = 1; i < contents.length; i += 1) {
+
+            if (contents[i] == null) break;
+
+            if (item.equals(contents[i].item())) {
+                // `T item` exists in PQ, change its priority
                 contents[i].myPriority = priority;
                 break;
             }
         }
+
     }
 
     /**
